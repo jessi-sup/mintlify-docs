@@ -1,102 +1,369 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Test",
+  "name": "음성 API 문서",
+  "description": "음성 API를 사용하여 텍스트를 자연스러운 음성으로 변환하는 방법을 알아보세요.",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#4F46E5",
+    "light": "#E0E7FF",
+    "dark": "#312E81"
   },
-  "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "versions": [
       {
-        "tab": "Guides",
-        "groups": [
+        "version": "한국어",
+        "default": true,
+        "tabs": [
           {
-            "group": "Get Started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
+            "tab": "사용자 가이드",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "시작하기",
+                "pages": [
+                  "ko/user-guide/index",
+                  "ko/user-guide/quickstart",
+                  "ko/user-guide/text-to-speech-guide"
+                ]
+              },
+              {
+                "group": "지원 및 리소스",
+                "pages": [
+                  "ko/user-guide/rate-limits",
+                  "ko/user-guide/handling-errors", 
+                  "ko/user-guide/faq"
+                ]
+              },
+              {
+                "group": "최신 업데이트",
+                "pages": [
+                  "ko/user-guide/release-notes"
+                ]
+              }
             ]
           },
           {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+            "tab": "API 레퍼런스",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "API 사용하기",
+                "pages": [
+                  "ko/api-reference/introduction",
+                  "ko/api-reference/authentication"
+                ]
+              },
+              {
+                "group": "Voices",
+                "pages": [
+                  "ko/api-reference/endpoints/get-voices",
+                  "ko/api-reference/endpoints/search-voices"
+                ]
+              },
+              {
+                "group": "Text to Speech",
+                "pages": [
+                  "ko/api-reference/endpoints/text-to-speech"
+                ]
+              },
+              {
+                "group": "Usage",
+                "pages": [
+                  "ko/api-reference/endpoints/get-voice-usage"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "샌드박스",
+            "icon": "box",
+            "groups": [
+              {
+                "group": "샌드박스 이용하기",
+                "pages": [
+                  "ko/sandbox/important-notice",
+                  "ko/sandbox/replace-voice-ids",
+                  "ko/sandbox/2-step-migration"
+                ]
+              },
+              {
+                "group": "샌드박스 엔드포인트",
+                "pages": [
+                  "ko/sandbox/endpoints/get-voices",
+                  "ko/sandbox/endpoints/search-voices",
+                  "ko/sandbox/endpoints/text-to-speech",
+                  "ko/sandbox/endpoints/predict-duration",
+                  "ko/sandbox/endpoints/get-voice-usage",
+                  "ko/sandbox/endpoints/get-credit-balance"
+                ]
+              }
             ]
           }
-        ]
+        ],
+        "global": {
+          "anchors": [
+            {
+              "anchor": "개발자 콘솔",
+              "href": "https://console.supertoneapi.com"
+            },
+            {
+              "anchor": "커뮤니티",
+              "href": "https://discord.com/invite/M3h5GJzQbG"
+            },
+            {
+              "anchor": "고객 지원",
+              "href": "https://support.supertone.ai/hc/en-us/categories/10267196754959-Play?_gl=1*14usson*_gcl_au*Mzk2MjIxMTM3LjE3NDUyMTU5OTM."
+            }
+          ]
+        }
       },
       {
-        "tab": "API Reference",
-        "groups": [
+        "version": "日本語",
+        "tabs": [
           {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
+            "tab": "ユーザーガイド",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "はじめに",
+                "pages": [
+                  "ja/user-guide/index",
+                  "ja/user-guide/quickstart",
+                  "ja/user-guide/text-to-speech-guide"
+                ]
+              },
+              {
+                "group": "サポートとリソース",
+                "pages": [
+                  "ja/user-guide/rate-limits",
+                  "ja/user-guide/handling-errors",
+                  "ja/user-guide/faq"
+                ]
+              },
+              {
+                "group": "最新アップデート",
+                "pages": [
+                  "ja/user-guide/release-notes"
+                ]
+              }
             ]
           },
           {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+            "tab": "API リファレンス",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "API の使用",
+                "pages": [
+                  "ja/api-reference/introduction",
+                  "ja/api-reference/authentication"
+                ]
+              },
+              {
+                "group": "Voices",
+                "pages": [
+                  "ja/api-reference/endpoints/get-voices",
+                  "ja/api-reference/endpoints/search-voices"
+                ]
+              },
+              {
+                "group": "Text to Speech",
+                "pages": [
+                  "ja/api-reference/endpoints/text-to-speech"
+                ]
+              },
+              {
+                "group": "Usage",
+                "pages": [
+                  "ja/api-reference/endpoints/get-voice-usage"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "サンドボックス",
+            "icon": "box",
+            "groups": [
+              {
+                "group": "サンドボックスの使用",
+                "pages": [
+                  "ja/sandbox/important-notice",
+                  "ja/sandbox/replace-voice-ids",
+                  "ja/sandbox/2-step-migration"
+                ]
+              },
+              {
+                "group": "サンドボックスエンドポイント",
+                "pages": [
+                  "ja/sandbox/endpoints/get-voices",
+                  "ja/sandbox/endpoints/search-voices",
+                  "ja/sandbox/endpoints/text-to-speech",
+                  "ja/sandbox/endpoints/predict-duration",
+                  "ja/sandbox/endpoints/get-voice-usage",
+                  "ja/sandbox/endpoints/get-credit-balance"
+                ]
+              }
             ]
           }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+        ],
+        "global": {
+          "anchors": [
+            {
+              "anchor": "開発者コンソール",
+              "href": "https://console.supertoneapi.com"
+            },
+            {
+              "anchor": "コミュニティ",
+              "href": "https://discord.com/invite/M3h5GJzQbG"
+            },
+            {
+              "anchor": "カスタマーサポート",
+              "href": "https://support.supertone.ai/hc/en-us/categories/10267196754959-Play?_gl=1*14usson*_gcl_au*Mzk2MjIxMTM3LjE3NDUyMTU5OTM."
+            }
+          ]
         }
-      ]
-    }
+      },
+      {
+        "version": "English",
+        "tabs": [
+          {
+            "tab": "User Guide",
+            "icon": "book-open",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "en/user-guide/index",
+                  "en/user-guide/quickstart",
+                  "en/user-guide/text-to-speech-guide"
+                ]
+              },
+              {
+                "group": "Support & Resources",
+                "pages": [
+                  "en/user-guide/rate-limits",
+                  "en/user-guide/handling-errors",
+                  "en/user-guide/faq"
+                ]
+              },
+              {
+                "group": "Latest Updates",
+                "pages": [
+                  "en/user-guide/release-notes"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API Reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Using the API",
+                "pages": [
+                  "en/api-reference/introduction",
+                  "en/api-reference/authentication"
+                ]
+              },
+              {
+                "group": "Voices",
+                "pages": [
+                  "en/api-reference/endpoints/get-voices",
+                  "en/api-reference/endpoints/search-voices"
+                ]
+              },
+              {
+                "group": "Text to Speech",
+                "pages": [
+                  "en/api-reference/endpoints/text-to-speech"
+                ]
+              },
+              {
+                "group": "Usage",
+                "pages": [
+                  "en/api-reference/endpoints/get-voice-usage"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Sandbox",
+            "icon": "box",
+            "groups": [
+              {
+                "group": "Using the Sandbox",
+                "pages": [
+                  "en/sandbox/important-notice",
+                  "en/sandbox/replace-voice-ids",
+                  "en/sandbox/2-step-migration"
+                ]
+              },
+              {
+                "group": "Sandbox Endpoints",
+                "pages": [
+                  "en/sandbox/endpoints/get-voices",
+                  "en/sandbox/endpoints/search-voices",
+                  "en/sandbox/endpoints/text-to-speech",
+                  "en/sandbox/endpoints/predict-duration",
+                  "en/sandbox/endpoints/get-voice-usage",
+                  "en/sandbox/endpoints/get-credit-balance"
+                ]
+              }
+            ]
+          }
+        ],
+        "global": {
+          "anchors": [
+            {
+              "anchor": "Developer Console",
+              "href": "https://console.supertoneapi.com"
+            },
+            {
+              "anchor": "Community",
+              "href": "https://discord.com/invite/M3h5GJzQbG"
+            },
+            {
+              "anchor": "Customer Support",
+              "href": "https://support.supertone.ai/hc/en-us/categories/10267196754959-Play?_gl=1*14usson*_gcl_au*Mzk2MjIxMTM3LjE3NDUyMTU5OTM."
+            }
+          ]
+        }
+      }
+    ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
   },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+  "favicon": "/favicon.png",
+  "search": {
+    "prompt": "API 문서 검색..."
+  },
+  "api": {
+    "openapi": "/openapi.json",
+    "playground": {
+      "display": "interactive"
     }
+  },
+  "appearance": {
+    "default": "system",
+    "strict": false
+  },
+  "styling": {
+    "codeblocks": "system",
+    "eyebrows": "section"
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://supertone.ai",
+      "github": "https://github.com/supertone",
+      "discord": "https://discord.com/invite/M3h5GJzQbG"
     }
+  },
+  "banner": {
+    "content": "샌드박스는 마이그레이션을 위한 임시 환경입니다. 2025년 9월까지만 운영됩니다.",
+    "dismissible": true
+  },
+  "seo": {
+    "indexing": "all"
   }
 }
