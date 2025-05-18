@@ -1,0 +1,1672 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/text-to-speech/{voice_id}": {
+      "post": {
+        "operationId": "InferenceController_convertTextToSpeech",
+        "summary": "Convert text to speech",
+        "description": "Convert text to speech using the specified voice",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_format",
+            "required": false,
+            "in": "query",
+            "description": "The desired output format of the audio file (wav, mp3). Default is wav.",
+            "schema": {
+              "default": "wav",
+              "enum": [
+                "wav",
+                "mp3"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-tts-engine",
+            "required": false,
+            "in": "header",
+            "description": "Choose TTS engine: \"supercage\", \"torchserve\", \"sagemaker\"",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIConvertTextToSpeechRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Audio file converted from text. The response includes an X-Audio-Length header with the duration in seconds.",
+            "content": {
+              "audio/wav": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "audio/mpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "headers": {
+              "X-Audio-Length": {
+                "description": "Duration of the audio in seconds",
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Invalid Request Body and Headers"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "402": {
+            "description": "Not Enough Credits"
+          },
+          "403": {
+            "description": "Forbidden: Permission denied"
+          },
+          "408": {
+            "description": "Request Timeout: Timeout while processing the request"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to convert text to speech"
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/v1/predict-tts-duration/{voice_id}": {
+      "post": {
+        "operationId": "InferenceController_predictTTSDuration",
+        "summary": "Predict text-to-speech duration",
+        "description": "Predict the duration of text-to-speech conversion without generating audio",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIConvertTextToSpeechRequestV2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns predicted duration of the audio in seconds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "duration": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Invalid Request Body and Headers"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "402": {
+            "description": "Not Enough Credits"
+          },
+          "403": {
+            "description": "Forbidden: Permission denied"
+          },
+          "408": {
+            "description": "Request Timeout: Timeout while processing the request"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to convert text to speech"
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/v1/voices": {
+      "get": {
+        "operationId": "VoiceController_getVoices",
+        "summary": "Gets all voices",
+        "description": "Gets a list of all available voices for a user.",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "voice response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVoiceListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No voices found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get voices"
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/v1/voices/search": {
+      "get": {
+        "operationId": "VoiceController_searchVoices",
+        "summary": "Search voices with advanced filtering and sorting",
+        "description": "Search and filter voices based on various parameters",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "Search across name and description",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "required": false,
+            "in": "query",
+            "description": "Filter by language (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gender",
+            "required": false,
+            "in": "query",
+            "description": "Filter by gender (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "age",
+            "required": false,
+            "in": "query",
+            "description": "Filter by age (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "use_case",
+            "required": false,
+            "in": "query",
+            "description": "Filter by use case (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "style",
+            "required": false,
+            "in": "query",
+            "description": "Filter by style (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number (default: 0)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page (default: 20, max: 100)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "Sorting criteria (default: name:asc)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful voice search response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetVoicesSearchResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No voices found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get voices"
+          }
+        },
+        "tags": [
+          "API"
+        ]
+      }
+    },
+    "/v1/voice-usage": {
+      "get": {
+        "operationId": "UsageController_getUsages",
+        "summary": "Retrieve TTS API usage data",
+        "description": "Retrieves a list of all TTS API usage records filtered by a specified date range.",
+        "parameters": [
+          {
+            "name": "start_date",
+            "required": true,
+            "in": "query",
+            "description": "The start date in YYYY-MM-DD format.",
+            "schema": {
+              "example": "2024-11-01",
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "required": true,
+            "in": "query",
+            "description": "The end date in YYYY-MM-DD format.",
+            "schema": {
+              "example": "2024-11-30",
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-sup-api-key",
+            "in": "header",
+            "description": "The API key to authenticate and authorize access to the service. This key is required for every request.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TTS API usage records matching the specified date range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsageListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No usages found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get usages"
+          }
+        },
+        "tags": [
+          "API"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/v1/internal/text-to-speech/{voice_id}": {
+      "post": {
+        "operationId": "InternalTTSController_convertTextToSpeech",
+        "summary": "Convert text to speech using internal API",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIConvertTextToSpeechRequestV2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns resource ID and duration of the generated audio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resource_id": {
+                      "type": "string"
+                    },
+                    "duration": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Internal"
+        ]
+      }
+    },
+    "/v1/internal/predict-tts-duration/{voice_id}": {
+      "post": {
+        "operationId": "InternalTTSController_predictTTSDuration",
+        "summary": "Predict text-to-speech duration without generating audio",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIConvertTextToSpeechRequestV2"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns predicted duration of the audio in seconds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "duration": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Internal"
+        ]
+      }
+    },
+    "/v1/internal/cvc": {
+      "post": {
+        "operationId": "InternalConvertVoiceController_convertVoice",
+        "summary": "Convert voice using the specified voice model",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertVoiceRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voice converted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConvertVoiceResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Internal"
+        ]
+      }
+    },
+    "/v1/internal/cvc/async": {
+      "post": {
+        "operationId": "InternalConvertVoiceController_convertVoiceAsync",
+        "summary": "Convert voice asynchronously using the specified voice model",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConvertVoiceRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Voice conversion job submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConvertVoiceAsyncResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Internal"
+        ]
+      }
+    },
+    "/sandbox/text-to-speech/{voice_id}": {
+      "post": {
+        "operationId": "InferenceV1Controller_convertTextToSpeechUsingCharacterId",
+        "summary": "Convert text to speech",
+        "description": "Convert text to speech using the specified voice",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "output_format",
+            "required": false,
+            "in": "query",
+            "description": "The desired output format of the audio file (wav, mp3). Default is wav.",
+            "schema": {
+              "default": "wav",
+              "enum": [
+                "wav",
+                "mp3"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-tts-engine",
+            "in": "header",
+            "description": "Choose TTS engine: \"supercage\" or \"torchserve\"",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/APIConvertTextToSpeechUsingCharacterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Audio file converted from text. The response includes an X-Audio-Length header with the duration in seconds.",
+            "content": {
+              "audio/wav": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "audio/mpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            },
+            "headers": {
+              "X-Audio-Length": {
+                "description": "Duration of the audio in seconds",
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Invalid Request Body and Headers"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "402": {
+            "description": "Not Enough Credits"
+          },
+          "403": {
+            "description": "Forbidden: Permission denied"
+          },
+          "408": {
+            "description": "Request Timeout: Timeout while processing the request"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to convert text to speech"
+          }
+        },
+        "tags": [
+          "API V1"
+        ]
+      }
+    },
+    "/sandbox/predict-duration/{voice_id}": {
+      "post": {
+        "operationId": "InferenceV1Controller_predictTTSDurationUsingCharacterId",
+        "summary": "Predict text-to-speech duration",
+        "description": "Predict the duration of text-to-speech conversion without generating audio",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "voice_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictTTSDurationUsingCharacterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns predicted duration of the audio in seconds",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "duration": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request: Invalid Request Body and Headers"
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "402": {
+            "description": "Not Enough Credits"
+          },
+          "403": {
+            "description": "Forbidden: Permission denied"
+          },
+          "408": {
+            "description": "Request Timeout: Timeout while processing the request"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to convert text to speech"
+          }
+        },
+        "tags": [
+          "API V1"
+        ]
+      }
+    },
+    "/sandbox/voices": {
+      "get": {
+        "operationId": "VoiceV1Controller_getAllVoicesGroupedByCharacter",
+        "summary": "Gets available voices",
+        "description": "Gets a paginated list of voices available to the user based on internal group logic, using token-based pagination.",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page (default: 20, min: 10, max: 100)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "next_page_token",
+            "required": false,
+            "in": "query",
+            "description": "Token for pagination (obtained from the previous page's response)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated available voices response with next page token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAPICharacterListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No voices found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get voices"
+          }
+        },
+        "tags": [
+          "API V1"
+        ]
+      }
+    },
+    "/sandbox/voices/search": {
+      "get": {
+        "operationId": "VoiceV1Controller_searchVoicesByCharacter",
+        "summary": "Search voices.",
+        "description": "Search and filter voices based on various parameters.",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "API key for the service",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of items per page (default: 20, max: 100)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "Search across name. Space separated.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "Search across description. Space separated.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "required": false,
+            "in": "query",
+            "description": "Filter by language (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "gender",
+            "required": false,
+            "in": "query",
+            "description": "Filter by gender (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "age",
+            "required": false,
+            "in": "query",
+            "description": "Filter by age (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "use_case",
+            "required": false,
+            "in": "query",
+            "description": "Filter by use case (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "style",
+            "required": false,
+            "in": "query",
+            "description": "Filter by style (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "model",
+            "required": false,
+            "in": "query",
+            "description": "Filter by model (comma-separated)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "next_page_token",
+            "required": false,
+            "in": "query",
+            "description": "Token for pagination (obtained from the previous page's response)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated available voices response with next page token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAPICharacterListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No voices found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get voices"
+          }
+        },
+        "tags": [
+          "API V1"
+        ]
+      }
+    },
+    "/sandbox/voice-usage": {
+      "get": {
+        "operationId": "UsageV1Controller_getUsagesByVoice",
+        "summary": "Retrieve TTS API usage data",
+        "description": "Retrieves a list of all TTS API usage records filtered by a specified date range.",
+        "parameters": [
+          {
+            "name": "start_date",
+            "required": true,
+            "in": "query",
+            "description": "The start date in YYYY-MM-DD format.",
+            "schema": {
+              "example": "2024-11-01",
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "required": true,
+            "in": "query",
+            "description": "The end date in YYYY-MM-DD format.",
+            "schema": {
+              "example": "2024-11-30",
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-sup-api-key",
+            "in": "header",
+            "description": "The API key to authenticate and authorize access to the service. This key is required for every request.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of TTS API usage records matching the specified date range.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsageListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No usages found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed to get usages"
+          }
+        },
+        "tags": [
+          "API V1"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/sandbox/credits": {
+      "get": {
+        "operationId": "CreditV1Controller_getCreditBalance",
+        "summary": "Retrieve credit balance",
+        "description": "Retrieves credit balance of the user.",
+        "parameters": [
+          {
+            "name": "x-sup-api-key",
+            "required": true,
+            "in": "header",
+            "description": "The API key to authenticate and authorize access to the service. This key is required for every request.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credit balance of the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCreditBalanceResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Invalid API key"
+          },
+          "404": {
+            "description": "Not Found: No user found"
+          },
+          "500": {
+            "description": "Internal Server Error: Failed with credit system."
+          }
+        },
+        "tags": [
+          "API V1"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Supertone API",
+    "description": "",
+    "version": "0.8.23",
+    "contact": {
+
+    }
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "access-token": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "ConvertTextToSpeechParameters": {
+        "type": "object",
+        "properties": {
+          "pitch_shift": {
+            "type": "number",
+            "default": 0
+          },
+          "pitch_variance": {
+            "type": "number",
+            "default": 1
+          },
+          "speed": {
+            "type": "number",
+            "default": 1
+          }
+        }
+      },
+      "APIConvertTextToSpeechRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to convert to speech",
+            "maxLength": 200
+          },
+          "language": {
+            "type": "string",
+            "description": "The language code of the text",
+            "enum": [
+              "en",
+              "ko",
+              "ja"
+            ],
+            "default": "ko"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model type to use for the text-to-speech conversion",
+            "enum": [
+              "pro",
+              "turbo"
+            ],
+            "default": "turbo"
+          },
+          "voice_settings": {
+            "$ref": "#/components/schemas/ConvertTextToSpeechParameters"
+          }
+        },
+        "required": [
+          "text",
+          "language"
+        ]
+      },
+      "APIConvertTextToSpeechRequestV2": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to convert to speech",
+            "maxLength": 300
+          },
+          "language": {
+            "type": "string",
+            "description": "The language code of the text",
+            "enum": [
+              "en",
+              "ko",
+              "ja"
+            ],
+            "default": "ko"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model type to use for the text-to-speech conversion",
+            "enum": [
+              "pro",
+              "turbo"
+            ],
+            "default": "turbo"
+          },
+          "voice_settings": {
+            "$ref": "#/components/schemas/ConvertTextToSpeechParameters"
+          }
+        },
+        "required": [
+          "text",
+          "language"
+        ]
+      },
+      "APIConvertTextToSpeechUsingCharacterRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to convert to speech",
+            "maxLength": 300
+          },
+          "language": {
+            "type": "string",
+            "description": "The language code of the text",
+            "enum": [
+              "en",
+              "ko",
+              "ja"
+            ]
+          },
+          "style": {
+            "type": "string",
+            "description": "The style of character to use for the text-to-speech conversion"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model type to use for the text-to-speech conversion",
+            "default": "tts-v2.1.0"
+          },
+          "voice_settings": {
+            "$ref": "#/components/schemas/ConvertTextToSpeechParameters"
+          }
+        },
+        "required": [
+          "text",
+          "language"
+        ]
+      },
+      "PredictTTSDurationUsingCharacterRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The text to convert to speech. Max length is 300 characters.",
+            "maxLength": 300
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code of the voice",
+            "enum": [
+              "en",
+              "ko",
+              "ja"
+            ]
+          },
+          "style": {
+            "type": "string",
+            "description": "The style of character to use for the text-to-speech conversion"
+          },
+          "model": {
+            "type": "string",
+            "description": "The model type to use for the text-to-speech conversion",
+            "default": "tts-v2.1.0"
+          },
+          "voice_settings": {
+            "$ref": "#/components/schemas/ConvertTextToSpeechParameters"
+          }
+        },
+        "required": [
+          "text",
+          "language"
+        ]
+      },
+      "GetVoiceResponseData": {
+        "type": "object",
+        "properties": {
+          "voice_id": {
+            "type": "string",
+            "description": "Unique identifier for the voice"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the voice"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the voice"
+          },
+          "age": {
+            "type": "string",
+            "description": "Age of the voice"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the voice"
+          },
+          "use_case": {
+            "type": "string",
+            "description": "Use case of the voice"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the voice"
+          },
+          "style": {
+            "type": "string",
+            "description": "style of the voice"
+          },
+          "sample_audio_url": {
+            "type": "string",
+            "description": "URL to the sample audio file for the voice"
+          },
+          "thumbnail_image_url": {
+            "type": "string",
+            "description": "URL to the thumbnail image for the voice"
+          }
+        },
+        "required": [
+          "voice_id",
+          "name",
+          "description",
+          "age",
+          "gender",
+          "use_case",
+          "language",
+          "style"
+        ]
+      },
+      "GetVoiceListResponse": {
+        "type": "object",
+        "properties": {
+          "voices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetVoiceResponseData"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "page_size": {
+            "type": "number"
+          },
+          "total_pages": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "voices"
+        ]
+      },
+      "GetVoicesSearchResponse": {
+        "type": "object",
+        "properties": {
+          "voices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetVoiceResponseData"
+            }
+          },
+          "total": {
+            "type": "number"
+          },
+          "page": {
+            "type": "number"
+          },
+          "page_size": {
+            "type": "number"
+          },
+          "total_pages": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "voices",
+          "total",
+          "page",
+          "page_size",
+          "total_pages"
+        ]
+      },
+      "APISampleData": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string",
+            "description": "Language of the sample"
+          },
+          "style": {
+            "type": "string",
+            "description": "Style of the sample"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model of the sample"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL to the sample audio file"
+          }
+        },
+        "required": [
+          "language",
+          "style",
+          "model",
+          "url"
+        ]
+      },
+      "GetAPICharacterResponseData": {
+        "type": "object",
+        "properties": {
+          "voice_id": {
+            "type": "string",
+            "description": "Unique identifier for the voice"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the voice"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the voice"
+          },
+          "age": {
+            "type": "string",
+            "description": "Age of the voice"
+          },
+          "gender": {
+            "type": "string",
+            "description": "Gender of the voice"
+          },
+          "use_case": {
+            "type": "string",
+            "description": "Use case of the voice"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language of the voice"
+          },
+          "styles": {
+            "type": "string",
+            "description": "style of the voice"
+          },
+          "models": {
+            "type": "string",
+            "description": "Models of the voice"
+          },
+          "samples": {
+            "description": "URL to the sample audio file for the voice",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/APISampleData"
+            }
+          },
+          "thumbnail_image_url": {
+            "type": "string",
+            "description": "URL to the thumbnail image for the voice"
+          }
+        },
+        "required": [
+          "voice_id",
+          "name",
+          "description",
+          "age",
+          "gender",
+          "use_case",
+          "language",
+          "styles",
+          "models"
+        ]
+      },
+      "GetAPICharacterListResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "description": "List of character items",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetAPICharacterResponseData"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of available characters (might be approximate or removed in future)",
+            "example": 150
+          },
+          "nextPageToken": {
+            "type": "string",
+            "description": "Token for fetching the next page of results. Undefined if no more pages.",
+            "example": "some_opaque_token_string_representing_last_id"
+          }
+        },
+        "required": [
+          "items",
+          "total"
+        ]
+      },
+      "GetUsageResponseData": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "description": "The date of the API usage in YYYY-MM-DD format."
+          },
+          "voice_id": {
+            "type": "string",
+            "description": "The unique identifier for the voice used in the API call."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the voice used in the API call."
+          },
+          "style": {
+            "type": "string",
+            "description": "The style of the voice used in the API call."
+          },
+          "language": {
+            "type": "string",
+            "description": "The language of the voice used in the API call."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model used in the API call."
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "description": "The URL for the voice thumbnail image."
+          },
+          "total_minutes_used": {
+            "type": "number",
+            "description": "The total duration (in minutes) of API usage for the specified voice and date."
+          }
+        },
+        "required": [
+          "date",
+          "voice_id",
+          "total_minutes_used"
+        ]
+      },
+      "GetUsageListResponse": {
+        "type": "object",
+        "properties": {
+          "usages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetUsageResponseData"
+            }
+          }
+        },
+        "required": [
+          "usages"
+        ]
+      },
+      "ConvertVoiceParametersDto": {
+        "type": "object",
+        "properties": {
+          "gender": {
+            "type": "number",
+            "description": "Gender adjustment (-1.0 to 1.0)",
+            "example": 0.5
+          },
+          "age": {
+            "type": "number",
+            "description": "Age adjustment (-1.0 to 1.0)",
+            "example": -0.3
+          },
+          "pitch_shift": {
+            "type": "number",
+            "description": "Pitch shift (-1.0 to 1.0)",
+            "example": 0.2
+          },
+          "pitch_variance": {
+            "type": "number",
+            "description": "Pitch variance (0.0 to 1.0)",
+            "example": 0.5
+          },
+          "speed": {
+            "type": "number",
+            "description": "Speed adjustment (0.5 to 2.0)",
+            "example": 1.2
+          },
+          "use_stable": {
+            "type": "boolean",
+            "description": "Use stable generation",
+            "example": true
+          }
+        }
+      },
+      "ConvertVoiceRequestDto": {
+        "type": "object",
+        "properties": {
+          "source_resource_id": {
+            "type": "string",
+            "description": "ID of the source audio resource",
+            "example": "resource_12345"
+          },
+          "voice_id": {
+            "type": "string",
+            "description": "ID of the target voice",
+            "example": "voice_67890"
+          },
+          "parameters": {
+            "description": "Voice conversion parameters",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConvertVoiceParametersDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source_resource_id",
+          "voice_id"
+        ]
+      },
+      "ConvertVoiceResponseDto": {
+        "type": "object",
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "description": "ID of the generated audio resource",
+            "example": "resource_abcdef"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of the generated audio",
+            "example": 12.34
+          }
+        },
+        "required": [
+          "resource_id",
+          "duration"
+        ]
+      },
+      "ConvertVoiceAsyncResponseDto": {
+        "type": "object",
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "description": "ID of the job",
+            "example": "job_123456"
+          }
+        },
+        "required": [
+          "job_id"
+        ]
+      },
+      "GetCreditBalanceResponse": {
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "Credit balance of the user",
+            "nullable": true
+          }
+        },
+        "required": [
+          "balance"
+        ]
+      }
+    }
+  }
+}
